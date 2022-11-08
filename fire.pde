@@ -2,7 +2,7 @@ import java.util.Iterator;
 import java.lang.Math;
 import java.util.Random;
 
-final int OBJECTS_COUNT = 1000;
+final int PARTICLES_COUNT = 1000;
 final int SCREEN_X = 800;
 final int SCREEN_Y = 600;
 final int MINIMUM_LIFE = 50;
@@ -11,11 +11,11 @@ final int MINIMUM_DIAMETER = 5;
 final int MAXIMUM_DIAMETER = 15;
 final int AMPLITUDE = 50;
 
-ArrayList<TrailingObject> objects;
-Iterator<TrailingObject> objIterator;  
+ArrayList<Particle> objects;
+Iterator<Particle> objIterator;  
 Random rnd = new Random();
 
-class TrailingObject { 
+class Particle { 
   float xCenter;
   float yCenter;
   float xShift;
@@ -26,13 +26,13 @@ class TrailingObject {
   int life;
   boolean sin;
     
-  TrailingObject(){  
+  Particle(){  
     setNewFireObject();
   }    
   
   void setNewFireObject(){
     sin = rnd.nextBoolean();
-    yCenter = SCREEN_Y+ 100 - rnd.nextInt(50);
+    yCenter = SCREEN_Y + 100 - rnd.nextInt(50);
     diameter = MAXIMUM_DIAMETER;
     radius = diameter / 2;  
     speed = 5;
@@ -53,6 +53,7 @@ class TrailingObject {
   
   void update() {   
     yCenter -= speed;    
+    
     if (sin)
       xCenter = (float)(AMPLITUDE * (Math.sin(Math.toRadians(yCenter)))) + xShift;
     else
@@ -69,10 +70,10 @@ class TrailingObject {
 void setup() { 
   size(800,600);
   
-  objects = new ArrayList<TrailingObject>();   
+  objects = new ArrayList<Particle>();   
   
-  for (int i = 0; i < OBJECTS_COUNT ; i++){  
-     TrailingObject obj = new TrailingObject();          
+  for (int i = 0; i < PARTICLES_COUNT ; i++){  
+     Particle obj = new Particle();          
      objects.add(obj); 
   }
 }
@@ -82,12 +83,9 @@ void draw() {
    
   objIterator = objects.iterator();
   
-  int i = 0;  
-
-  while(objIterator.hasNext()){
-     i++;
+  while(objIterator.hasNext()){ 
     
-     TrailingObject obj = objIterator.next();
+     Particle obj = objIterator.next();
      
      obj.update();
 
