@@ -16,9 +16,9 @@ Iterator<Particle> objIterator;
 Random rnd = new Random();
 
 class Particle { 
-  float xCenter;
+  float xMovement;
   float yCenter;
-  float xShift;
+  float xCenter;
   float diameter;
   float radius;
   float speed;
@@ -37,7 +37,7 @@ class Particle {
     radius = diameter / 2;  
     speed = 5;
     life = rnd.nextInt(MAXIMUM_LIFE) + MINIMUM_LIFE;
-    xShift = rnd.nextInt(SCREEN_X);
+    xCenter = rnd.nextInt(SCREEN_X);
   }
   
   color getColor(){
@@ -55,9 +55,9 @@ class Particle {
     yCenter -= speed;    
     
     if (sin)
-      xCenter = (float)(AMPLITUDE * (Math.sin(Math.toRadians(yCenter)))) + xShift;
+      xMovement = (float)(AMPLITUDE * (Math.sin(Math.toRadians(yCenter)))) + xCenter;
     else
-      xCenter = (float)(AMPLITUDE * (Math.cos(Math.toRadians(yCenter)))) + xShift;
+      xMovement = (float)(AMPLITUDE * (Math.cos(Math.toRadians(yCenter)))) + xCenter;
     
     if (life > 0)
       life--;
@@ -66,6 +66,14 @@ class Particle {
     }
   } 
 } 
+
+void addFire(){
+  Particle obj = new Particle();
+  obj.setNewFireObject();
+  obj.xCenter = mouseX;
+  obj.yCenter = mouseY;
+  objects.add(obj); 
+}
 
 void setup() { 
   size(800,600);
@@ -93,10 +101,12 @@ void draw() {
      
      fill(obj.getColor());
      
-     circle(obj.xCenter, obj.yCenter,  obj.getDiameter());   
+     circle(obj.xMovement, obj.yCenter,  obj.getDiameter());   
      
   } 
+  
+  if (mousePressed && (mouseButton == LEFT)) {
+    addFire();
+  }
    
 }
-    
-    
